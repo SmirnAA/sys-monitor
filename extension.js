@@ -269,6 +269,7 @@ function getThresholdState(pct) {
 function makePanelIcon(ext, iconName, colorClass) {
     const icon = new St.Icon({
         style_class: `sysmon-panel-icon ${colorClass}`,
+        icon_size: 14,
         y_align: Clutter.ActorAlign.CENTER,
     });
 
@@ -477,11 +478,11 @@ class Indicator extends PanelMenu.Button {
             y_align: Clutter.ActorAlign.CENTER,
         });
 
-        this._cpuGroup = this._makePanelMetric('cpu', '0%', 'color-normal', 26);
-        this._ramGroup = this._makePanelMetric('ram', '0%', 'color-normal', 26);
-        this._swapGroup = this._makePanelMetric('swap', '0%', 'color-normal', 26);
-        this._upGroup = this._makePanelMetric('upload', '0KB/s', 'color-up', 48);
-        this._downGroup = this._makePanelMetric('download', '0KB/s', 'color-down', 48);
+        this._cpuGroup = this._makePanelMetric('cpu', '0%', 'color-normal', 34);
+        this._ramGroup = this._makePanelMetric('ram', '0%', 'color-normal', 34);
+        this._swapGroup = this._makePanelMetric('swap', '0%', 'color-normal', 34);
+        this._upGroup = this._makePanelMetric('upload', '0KB/s', 'color-up', 58);
+        this._downGroup = this._makePanelMetric('download', '0KB/s', 'color-down', 58);
 
         const sep = () => {
             const label = new St.Label({
