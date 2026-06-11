@@ -1,0 +1,4 @@
+dist/
+venv/
+*.shell-extension.zip
+sysmon.shell-extension.zip

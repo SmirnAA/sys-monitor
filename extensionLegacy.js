@@ -813,6 +813,10 @@ class SysMonExtension {
      get path() {
          return ExtensionUtils.getCurrentExtension().path;
      }
+
+     openPreferences() {
+         ExtensionUtils.openPrefs();
+     }
 }
 
 function init() {

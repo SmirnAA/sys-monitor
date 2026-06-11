@@ -79,4 +79,6 @@ run_step "Packed zip integrity" unzip -t "${PACK_FILE}"
 run_step "Verify packaged icons" unzip -l "${PACK_FILE}" icons/cpu-symbolic.svg icons/download-symbolic.svg icons/gpu-symbolic.svg icons/ram-symbolic.svg icons/swap-symbolic.svg icons/upload-symbolic.svg >/dev/null
 run_unit_tests_if_configured
 
+run_step "Dual variant production pack" "${ROOT_DIR}/scripts/pack-dual.sh" "${TMP_DIR}/dist"
+
 echo "==> All checks completed."

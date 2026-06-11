@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
-"$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/pack-install.sh"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+"$ROOT/pack-dual.sh"
+"$ROOT/install-variant.sh" gnome45-50
