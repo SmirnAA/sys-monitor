@@ -1,6 +1,6 @@
 .sysmon-panel-box {
-    spacing: 6px;
-    padding: 0 6px;
+    spacing: 5px;
+    padding: 0 5px;
     min-height: 16px;
     background-color: transparent;
     border: none;
@@ -21,100 +21,216 @@
 .sysmon-panel-label {
     font-size: 10px;
     font-family: 'JetBrains Mono', 'Ubuntu Mono', monospace;
-    color: rgba(216,226,244,0.72);
+    color: rgba(238,238,236,0.72);
     font-weight: 800;
 }
 
 .sysmon-panel-value {
     font-size: 10px;
     font-family: 'JetBrains Mono', 'Ubuntu Mono', monospace;
-    color: rgba(255,255,255,0.96);
+    color: rgba(246,245,244,0.96);
     font-weight: 800;
 }
 
 .sysmon-panel-sep {
-    color: rgba(183,196,221,0.28);
+    color: rgba(238,238,236,0.24);
     font-size: 10px;
     font-weight: 800;
     padding: 0 2px;
 }
 
-.sysmon-popup-title {
-    font-size: 10px;
-    font-weight: 800;
-    color: rgba(255,255,255,0.46);
-    letter-spacing: 1.2px;
-    padding: 8px 12px;
+.sysmon-popup-menu {
+    padding: 6px 0 12px;
 }
- 
-.sysmon-card-row { 
-    spacing: 12px; 
-    padding: 6px 12px; 
-} 
- 
-.sysmon-card-title { 
-    font-size: 12px; 
-    font-weight: 600; 
-    color: rgba(255,255,255,0.68); 
-} 
 
-.sysmon-gpu-badge {
-    background-color: rgba(206, 147, 216, 0.16);
-    color: #e0a8eb;
-    font-size: 8px;
-    font-weight: bold;
-    padding: 0px 4px;
-    border-radius: 4px;
-    margin-left: 4px;
+.sysmon-popup-item {
+    padding: 0;
+    min-height: 0;
 }
- 
-.sysmon-card-pct { 
-    font-size: 11px; 
-    font-family: 'JetBrains Mono', monospace; 
-    color: rgba(255,255,255,0.9); 
-    min-width: 32px; 
-    text-align: right;
-} 
- 
-.sysmon-net-grid { 
-    spacing: 8px; 
-    padding: 8px 12px; 
-} 
+
+.sysmon-popup-header {
+    spacing: 10px;
+    padding: 14px 16px 8px;
+}
+
+.sysmon-popup-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: rgba(246,245,244,0.96);
+}
+
+.sysmon-header-icon {
+    icon-size: 14px;
+    color: rgba(246,245,244,0.55);
+}
+
+.sysmon-header-btn {
+    padding: 4px;
+    border-radius: 6px;
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.sysmon-header-btn:hover {
+    background-color: rgba(255,255,255,0.06);
+}
+
+.sysmon-metric-card {
+    spacing: 12px;
+    padding: 14px 14px 12px;
+    margin: 0 10px 8px;
+    min-height: 72px;
+    border-radius: 14px;
+    background-color: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.sysmon-metric-icon-wrap {
+    border-radius: 11px;
+}
+
+.sysmon-metric-icon {
+    icon-size: 22px;
+    -st-icon-style: symbolic;
+}
+
+.sysmon-metric-body {
+    spacing: 3px;
+    padding-right: 8px;
+}
+
+.sysmon-metric-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(246,245,244,0.96);
+}
+
+.sysmon-metric-detail {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(246,245,244,0.45);
+}
+
+.sysmon-metric-side {
+    spacing: 4px;
+    min-width: 108px;
+}
+
+.sysmon-metric-stats {
+    spacing: 10px;
+}
+
+.sysmon-metric-temp,
+.sysmon-metric-pct,
+.sysmon-net-value {
+    font-family: Cantarell, sans-serif;
+    font-weight: 700;
+}
+
+.sysmon-metric-temp,
+.sysmon-metric-pct {
+    font-size: 14px;
+}
+
+.sysmon-net-grid {
+    spacing: 8px;
+    padding: 0 10px 2px;
+}
 
 .sysmon-net-card {
-    background-color: rgba(255, 255, 255, 0.06);
-    border-radius: 8px;
-    padding: 8px 12px;
+    background-color: rgba(255,255,255,0.035);
+    border-radius: 14px;
+    padding: 12px 12px 0;
     spacing: 4px;
-    border: 1px solid rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.05);
+    min-height: 118px;
 }
 
-.sysmon-net-card-title {
-    font-size: 9px;
-    font-weight: 800;
-    color: rgba(255,255,255,0.48);
-    letter-spacing: 0.5px;
+.sysmon-net-top {
+    spacing: 8px;
+    padding: 0 2px;
 }
 
-.sysmon-net-card-value {
-    font-size: 16px;
-    font-weight: bold;
-    color: rgba(255,255,255,0.9);
+.sysmon-net-icon-wrap {
+    border-radius: 8px;
 }
 
-.sysmon-net-card-unit {
-    font-size: 10px;
-    color: rgba(255,255,255,0.4);
-    margin-left: 4px;
+.sysmon-net-icon {
+    icon-size: 16px;
+    -st-icon-style: symbolic;
 }
 
-/* Colors from reference */
+.sysmon-net-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(246,245,244,0.58);
+}
+
+.sysmon-net-value-row {
+    spacing: 4px;
+    padding: 0 2px 2px;
+}
+
+.sysmon-net-value {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.sysmon-net-unit {
+    font-size: 12px;
+    color: rgba(246,245,244,0.42);
+    padding-top: 10px;
+}
+
+/* Panel + threshold colors */
 .color-normal { color: #8bd889; }
 .color-warning { color: #f4b24d; }
 .color-critical { color: #ff6b6b; }
-.color-cpu { color: #55c8f4; }
-.color-ram { color: #8bd889; }
-.color-gpu { color: #ce93d8; }
-.color-swap { color: #ffb74d; }
 .color-up { color: #f4b24d; }
 .color-down { color: #67c2ba; }
+.color-monochrome { color: #deddda; }
+.color-temp-cool { color: #67c2ba; }
+.color-temp-warm { color: #f4b24d; }
+.color-temp-hot { color: #ff6b6b; }
+
+/* Popup tones: backgrounds on wraps, colors on icons/text */
+.tone-cpu { color: #34d399; }
+.tone-ram { color: #a78bfa; }
+.tone-swap { color: #facc15; }
+.tone-gpu { color: #c084fc; }
+.tone-up { color: #34d399; }
+.tone-down { color: #60a5fa; }
+.tone-mono { color: #deddda; }
+
+.sysmon-metric-icon-wrap.tone-cpu,
+.sysmon-net-icon-wrap.tone-up {
+    background-color: rgba(52, 211, 153, 0.14);
+}
+
+.sysmon-metric-icon-wrap.tone-ram {
+    background-color: rgba(167, 139, 250, 0.14);
+}
+
+.sysmon-metric-icon-wrap.tone-swap {
+    background-color: rgba(250, 204, 21, 0.14);
+}
+
+.sysmon-metric-icon-wrap.tone-gpu {
+    background-color: rgba(192, 132, 252, 0.14);
+}
+
+.sysmon-net-icon-wrap.tone-down {
+    background-color: rgba(96, 165, 250, 0.14);
+}
+
+.sysmon-metric-icon.tone-cpu,
+.sysmon-net-icon.tone-up { color: #34d399; }
+
+.sysmon-metric-icon.tone-ram { color: #a78bfa; }
+
+.sysmon-metric-icon.tone-swap { color: #facc15; }
+
+.sysmon-metric-icon.tone-gpu { color: #c084fc; }
+
+.sysmon-net-icon.tone-down { color: #60a5fa; }

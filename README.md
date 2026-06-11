@@ -13,6 +13,7 @@ A lightweight, professional GNOME Shell extension that displays real-time system
 - **RAM Usage** - Memory consumption with percentage and detailed popup
 - **Swap Usage** - Swap space utilization
 - **Network Speed** - Live upload/download speeds in KB/s or MB/s
+- **Monochrome Mode** - Optional neutral indicators for users who prefer native-looking panel styling
 
 ### Visual Indicators
 
@@ -73,6 +74,9 @@ Open **Extensions → System Monitor → Settings** to customize:
 | Setting | Description | Default |
 |---------|-------------|---------|
 | Refresh interval | Update frequency (1-10 seconds) | 2s |
+| Monochrome mode | Use one neutral color instead of status colors | Disabled |
+| Show CPU | Display CPU usage in panel & popup | Enabled |
+| Show RAM | Display RAM usage in panel & popup | Enabled |
 | Show GPU | Display GPU in popup | Enabled |
 | Show Swap | Display swap in panel & popup | Enabled |
 | Show Network | Display network speeds | Enabled |

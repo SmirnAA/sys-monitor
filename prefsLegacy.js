@@ -51,6 +51,9 @@ class Preferences {
 
         // Toggle switches
         const toggles = [
+            ['monochrome-mode', 'Monochrome mode'],
+            ['show-cpu', 'Show CPU'],
+            ['show-ram', 'Show RAM'],
             ['show-gpu', 'Show GPU'],
             ['show-swap', 'Show Swap'],
             ['show-network', 'Show Network'],
