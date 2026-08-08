@@ -2,14 +2,6 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-TMP_DIR=""
-
-cleanup() {
-    if [[ -n "${TMP_DIR}" && -d "${TMP_DIR}" ]]; then
-        rm -rf "${TMP_DIR}"
-    fi
-}
-trap cleanup EXIT
 
 need_cmd() {
     if ! command -v "$1" >/dev/null 2>&1; then
@@ -25,60 +17,36 @@ run_step() {
     "$@"
 }
 
-run_unit_tests_if_configured() {
-    if [[ -f "${ROOT_DIR}/package.json" ]] && command -v npm >/dev/null 2>&1; then
-        if jq -e '.scripts.test' "${ROOT_DIR}/package.json" >/dev/null 2>&1; then
-            run_step "Unit tests (npm test)" npm --prefix "${ROOT_DIR}" test
-            return
-        fi
-    fi
-
-    if [[ -f "${ROOT_DIR}/pyproject.toml" ]] && command -v pytest >/dev/null 2>&1; then
-        run_step "Unit tests (pytest)" pytest "${ROOT_DIR}"
-        return
-    fi
-
-    echo "==> Unit tests"
-    echo "SKIP: no configured unit-test runner found."
-}
-
-need_cmd node
 need_cmd jq
-need_cmd glib-compile-schemas
-need_cmd gnome-extensions
-need_cmd unzip
+need_cmd python3
 need_cmd bash
+need_cmd zip
+need_cmd unzip
 
-run_step "Syntax check: extension.js" node --check "${ROOT_DIR}/extension.js"
-run_step "Syntax check: extensionLegacy.js" node --check "${ROOT_DIR}/extensionLegacy.js"
-run_step "Syntax check: prefs.js" node --check "${ROOT_DIR}/prefs.js"
-run_step "Syntax check: prefsLegacy.js" node --check "${ROOT_DIR}/prefsLegacy.js"
-
-run_step "Schema validation" glib-compile-schemas --strict --dry-run "${ROOT_DIR}/schemas"
 run_step "Metadata JSON validation" jq empty "${ROOT_DIR}/metadata.json"
 run_step "Installer syntax validation" bash -n "${ROOT_DIR}/install.sh"
+run_step "Helper syntax validation" python3 -m py_compile "${ROOT_DIR}/contents/code/monitor.py"
+rm -rf "${ROOT_DIR}/contents/code/__pycache__"
+
+if command -v qmllint >/dev/null 2>&1; then
+    while IFS= read -r file; do
+        run_step "QML lint: $(basename "$file")" qmllint "$file"
+    done < <(find "${ROOT_DIR}/contents" -name '*.qml' | sort)
+else
+    echo "==> QML lint"
+    echo "SKIP: qmllint not installed."
+fi
 
 TMP_DIR="$(mktemp -d)"
-PACK_ARGS=(
-    "${ROOT_DIR}"
-    --force
-    --out-dir "${TMP_DIR}"
-    --extra-source=icons
-)
-run_step "Pack extension" gnome-extensions pack "${PACK_ARGS[@]}"
+trap 'rm -rf "$TMP_DIR"' EXIT
 
-UUID="$(jq -r '.uuid' "${ROOT_DIR}/metadata.json")"
-PACK_FILE="${TMP_DIR}/${UUID}.shell-extension.zip"
+run_step "Pack plasmoid" "${ROOT_DIR}/scripts/pack-plasmoid.sh" "$TMP_DIR"
+PACK_FILE="$(find "$TMP_DIR" -maxdepth 1 -name '*.plasmoid' -print -quit)"
 
-if [[ ! -f "${PACK_FILE}" ]]; then
-    echo "ERROR: expected pack output not found: ${PACK_FILE}" >&2
+if [[ -z "$PACK_FILE" ]]; then
+    echo "ERROR: expected plasmoid archive was not created." >&2
     exit 1
 fi
 
-run_step "Packed zip integrity" unzip -t "${PACK_FILE}"
-run_step "Verify packaged icons" unzip -l "${PACK_FILE}" icons/cpu-symbolic.svg icons/download-symbolic.svg icons/gpu-symbolic.svg icons/ram-symbolic.svg icons/swap-symbolic.svg icons/upload-symbolic.svg >/dev/null
-run_unit_tests_if_configured
-
-run_step "Dual variant production pack" "${ROOT_DIR}/scripts/pack-dual.sh" "${TMP_DIR}/dist"
-
+run_step "Packed archive integrity" unzip -t "$PACK_FILE"
 echo "==> All checks completed."

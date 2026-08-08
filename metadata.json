@@ -1,16 +1,22 @@
 {
-  "name": "System Monitor",
-  "description": "CPU, GPU, RAM, Swap, Network speed in your panel",
-  "uuid": "sysmonitor@talhasiddique7",
-  "settings-schema": "org.gnome.shell.extensions.sysmon",
-  "shell-version": [
-    "45",
-    "46",
-    "47",
-    "48",
-    "49",
-    "50"
-  ],
-  "version": 8,
-  "url": "https://extensions.gnome.org/extension/9838/system-monitor/"
+  "KPackageStructure": "Plasma/Applet",
+  "KPlugin": {
+    "Id": "com.talhasiddique7.sysmonitor",
+    "Name": "System Monitor",
+    "Description": "CPU, GPU, RAM, Swap, and network speed in your KDE panel",
+    "Icon": "utilities-system-monitor",
+    "Version": "8.0.0",
+    "Website": "https://github.com/talhasiddique7/sys-monitor",
+    "License": "MIT",
+    "Category": "System Information",
+    "Authors": [
+      {
+        "Name": "Talha Siddique",
+        "Email": "talhasiddique.developer@gmail.com"
+      }
+    ],
+    "EnabledByDefault": true
+  },
+  "X-Plasma-API-Minimum-Version": "6.0",
+  "X-Plasma-MainScript": "ui/main.qml"
 }

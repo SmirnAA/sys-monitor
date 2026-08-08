@@ -1,24 +1,26 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-UUID="sysmonitor@talhasiddique7"
-EXT_DIR="$HOME/.local/share/gnome-shell/extensions/$UUID"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PLUGIN_ID="$(jq -r '.KPlugin.Id' "$ROOT_DIR/metadata.json")"
+TARGET_DIR="$HOME/.local/share/plasma/plasmoids/$PLUGIN_ID"
 
-echo "Installing $UUID to $EXT_DIR..."
+echo "Installing $PLUGIN_ID to $TARGET_DIR..."
 
-# Create directory
-mkdir -p "$EXT_DIR/schemas" "$EXT_DIR/icons"
-
-# Copy files
-cp extension.js "$EXT_DIR/"
-cp prefs.js "$EXT_DIR/"
-cp metadata.json "$EXT_DIR/"
-cp stylesheet.css "$EXT_DIR/"
-cp icons/*.svg "$EXT_DIR/icons/"
-cp schemas/org.gnome.shell.extensions.sysmon.gschema.xml "$EXT_DIR/schemas/"
-
-# Compile schemas
-glib-compile-schemas "$EXT_DIR/schemas/"
+if command -v kpackagetool6 >/dev/null 2>&1; then
+    kpackagetool6 --type Plasma/Applet --upgrade "$ROOT_DIR" >/dev/null 2>&1 || \
+        kpackagetool6 --type Plasma/Applet --install "$ROOT_DIR"
+else
+    rm -rf "$TARGET_DIR"
+    mkdir -p "$TARGET_DIR"
+    cp -R \
+        "$ROOT_DIR/contents" \
+        "$ROOT_DIR/icons" \
+        "$ROOT_DIR/LICENSE" \
+        "$ROOT_DIR/metadata.json" \
+        "$TARGET_DIR/"
+fi
 
 echo "Installation complete."
-echo "Please restart GNOME Shell (Alt+F2 -> r -> Enter on X11, or log out and in on Wayland)."
-echo "Then enable the extension with: gnome-extensions enable $UUID"
+echo "Add the widget named 'System Monitor' from KDE Plasma widgets if it is not already on your panel."
+echo "If Plasma does not pick up the update immediately, run: kquitapp6 plasmashell && kstart6 plasmashell"
