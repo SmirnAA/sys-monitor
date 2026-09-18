@@ -15,6 +15,118 @@ A lightweight, professional GNOME Shell extension that displays real-time system
 - **Network Speed** - Live upload/download speeds in KB/s or MB/s
 - **Monochrome Mode** - Optional neutral indicators for users who prefer native-looking panel styling
 
+
+## Architecture Diagram
+
+```mermaid
+flowchart TD
+
+subgraph group_platform["Platform Sources"]
+  node_proc_stat[("CPU Statistics")]
+  node_proc_meminfo[("Memory Statistics")]
+  node_proc_netdev[("Network Statistics")]
+  node_gpu_sysfs[("GPU Sysfs")]
+  node_hwmon[("Temperature Sensors")]
+end
+
+subgraph group_runtime["Monitoring Runtime"]
+  node_modern_runtime["Modern Runtime<br/>[extension.js]"]
+  node_legacy_runtime["Legacy Runtime<br/>[extensionLegacy.js]"]
+  node_cpu_sampler["CPU Sampler<br/>[extension.js]"]
+  node_memory_sampler["Memory Sampler<br/>[extension.js]"]
+  node_network_sampler["Network Sampler<br/>[extension.js]"]
+  node_gpu_sampler["GPU Sampler<br/>[extension.js]"]
+  node_temp_sampler["Temperature Sampler<br/>[extension.js]"]
+end
+
+subgraph group_presentation["Shell Presentation"]
+  node_panel["Panel Indicators<br/>[extension.js]"]
+  node_popup["Detail Popup<br/>[extension.js]"]
+  node_charts["History Charts<br/>[extension.js]"]
+end
+
+subgraph group_configuration["Configuration"]
+  node_settings[("Extension Settings")]
+  node_preferences["Preferences UI<br/>[prefs.js]"]
+end
+
+node_user(("User"))
+node_gnome_shell(("GNOME Shell"))
+node_nvidia_cli["NVIDIA CLI"]
+
+node_user -->|"enables extension"| node_gnome_shell
+node_gnome_shell -->|"loads variant"| node_modern_runtime
+node_gnome_shell -.->|"loads variant"| node_legacy_runtime
+
+node_modern_runtime -->|"adds status area"| node_gnome_shell
+node_legacy_runtime -.->|"adds status area"| node_gnome_shell
+
+node_modern_runtime -->|"samples CPU"| node_cpu_sampler
+node_modern_runtime -->|"samples memory"| node_memory_sampler
+node_modern_runtime -->|"samples network"| node_network_sampler
+node_modern_runtime -->|"samples GPU"| node_gpu_sampler
+node_modern_runtime -->|"samples temperature"| node_temp_sampler
+
+node_legacy_runtime -.->|"samples CPU"| node_cpu_sampler
+node_legacy_runtime -.->|"samples memory"| node_memory_sampler
+node_legacy_runtime -.->|"samples network"| node_network_sampler
+node_legacy_runtime -.->|"samples GPU"| node_gpu_sampler
+node_legacy_runtime -.->|"samples temperature"| node_temp_sampler
+
+node_cpu_sampler -->|"reads statistics"| node_proc_stat
+node_memory_sampler -->|"reads statistics"| node_proc_meminfo
+node_network_sampler -->|"reads statistics"| node_proc_netdev
+node_gpu_sampler -->|"reads AMD state"| node_gpu_sysfs
+node_gpu_sampler -.->|"runs nvidia-smi"| node_nvidia_cli
+node_temp_sampler -->|"reads sensors"| node_hwmon
+
+node_modern_runtime -->|"updates indicators"| node_panel
+node_legacy_runtime -.->|"updates indicators"| node_panel
+
+node_modern_runtime -->|"updates details"| node_popup
+node_legacy_runtime -.->|"updates details"| node_popup
+
+node_modern_runtime -->|"updates history"| node_charts
+node_legacy_runtime -.->|"updates history"| node_charts
+
+node_user -->|"opens details"| node_panel
+node_panel -->|"opens popup"| node_popup
+
+node_preferences -->|"writes preferences"| node_settings
+node_modern_runtime -->|"reads settings"| node_settings
+node_legacy_runtime -.->|"reads settings"| node_settings
+
+node_settings -->|"controls visibility"| node_panel
+node_settings -->|"controls visibility"| node_popup
+
+click node_modern_runtime "https://github.com/talhasiddique7/sys-monitor/blob/main/extension.js"
+click node_legacy_runtime "https://github.com/talhasiddique7/sys-monitor/blob/main/extensionLegacy.js"
+click node_cpu_sampler "https://github.com/talhasiddique7/sys-monitor/blob/main/extension.js"
+click node_memory_sampler "https://github.com/talhasiddique7/sys-monitor/blob/main/extension.js"
+click node_network_sampler "https://github.com/talhasiddique7/sys-monitor/blob/main/extension.js"
+click node_gpu_sampler "https://github.com/talhasiddique7/sys-monitor/blob/main/extension.js"
+click node_temp_sampler "https://github.com/talhasiddique7/sys-monitor/blob/main/extension.js"
+click node_settings "https://github.com/talhasiddique7/sys-monitor/blob/main/schemas/org.gnome.shell.extensions.sysmon.gschema.xml"
+click node_preferences "https://github.com/talhasiddique7/sys-monitor/blob/main/prefs.js"
+click node_panel "https://github.com/talhasiddique7/sys-monitor/blob/main/extension.js"
+click node_popup "https://github.com/talhasiddique7/sys-monitor/blob/main/extension.js"
+click node_charts "https://github.com/talhasiddique7/sys-monitor/blob/main/extension.js"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+
+class node_proc_stat,node_proc_meminfo,node_proc_netdev,node_gpu_sysfs,node_hwmon,node_user toneBlue
+class node_modern_runtime,node_legacy_runtime,node_cpu_sampler,node_memory_sampler,node_network_sampler,node_gpu_sampler,node_temp_sampler toneAmber
+class node_panel,node_popup,node_charts toneMint
+class node_settings,node_preferences toneRose
+class node_gnome_shell,node_nvidia_cli toneIndigo
+```
+
 ### Visual Indicators
 
 | Color | Threshold | Meaning |
